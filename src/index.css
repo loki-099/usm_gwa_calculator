@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary-green: #1f7a03;
+  --color-primary-green-light: #5da948;
+  --color-primary-yellow: #f2d305;
+  --color-primary-gray: #343437;
+  --font-display: 'Inter', 'sans-serif';
+  --my-gradient: linear-gradient(to right, #1f7a03, #5da948);
+}
