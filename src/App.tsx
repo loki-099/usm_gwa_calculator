@@ -130,9 +130,9 @@ function App() {
         <Header />
         <main className='min-h-screen py-6 px-3 max-w-5xl mx-auto mb-10'>
           {/* Calculate Container */}
-          <div className='rounded-md overflow-hidden shadow-xl bg-gray-50'>
+          <div className='rounded-md shadow-xl bg-gray-50'>
             {/* Calculate Header */}
-            <div className='bg-linear-to-r from-primary-green to-primary-green-light p-4 md:p-6 border-b border-primary-yellow'>
+            <div className='bg-linear-to-r from-primary-green to-primary-green-light p-4 md:p-6 border-b border-primary-yellow rounded-t-md'>
               <h1 className='font-bold text-white text-xl md:text-2xl'>
                 Calculate your GWA
               </h1>

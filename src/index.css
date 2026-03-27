@@ -1,5 +1,13 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-v20-latin-regular.woff2') format('woff2');
+  font-weight: 400 500 600 700 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-primary-green: #1f7a03;
   --color-primary-green-light: #5da948;
@@ -8,4 +16,12 @@
   --color-primary-gray: #343437;
   --font-display: 'Inter', 'sans-serif';
   --my-gradient: linear-gradient(to right, #1f7a03, #5da948);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv01', 'ss01', 'ss03'; /* Optional: Customize Inter alternates */
+  }
 }
