@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const Header = () => {
   return (
     <header className='bg-linear-to-r from-primary-green to-primary-green-light border-b-2 border-primary-yellow sticky top-0'>
