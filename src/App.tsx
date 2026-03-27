@@ -15,6 +15,8 @@ function App() {
   const [unitsErrorIndices, setUnitsErrorIndices] = useState<number[]>([]);
   const [errorToast, setErrorToast] = useState<string | null>(null);
   const [gwaResult, setGwaResult] = useState<number | null>(null);
+  const [totalUnits, setTotalUnits] = useState<number>(0);
+  const [academicAward, setAcademicAward] = useState<string>('None');
 
   const showErrorToast = (message: string) => {
     setErrorToast(message);
@@ -89,7 +91,16 @@ function App() {
         totalUnits += course.units || 0;
         totalGrade += (course.grade || 0) * (course.units || 0);
       }
-      setGwaResult(totalGrade / totalUnits);
+      let gwa = totalGrade / totalUnits;
+      if (gwa <= 1.25) {
+        setAcademicAward('UAA');
+      } else if (1.26 <= gwa && gwa <= 1.5) {
+        setAcademicAward('CAA');
+      } else {
+        setAcademicAward('None');
+      }
+      setTotalUnits(totalUnits);
+      setGwaResult(gwa);
     }
 
     console.log(courses);
@@ -142,7 +153,7 @@ function App() {
               </p>
             </div>
             {/* Course Input Form */}
-            <div className='p-4 md:p-6'>
+            <div className='py-4 px-4 md:py-6 md:px-30'>
               <div className='flex items-center justify-between mb-4'>
                 <h1 className='font-bold text-lg text-primary-gray'>
                   Your Courses
@@ -191,8 +202,19 @@ function App() {
               <h1 className='font-bold text-xl md:text-2xl text-center'>Your GWA Result</h1>
             </div>
             {/* Body */}
-            <div className='p-4 md:p-6'>
+            <div className='py-4 px-4 md:py-6 md:px-30'>
               <h1 className='font-bold text-2xl md:text-3xl text-center'>{gwaResult ? gwaResult.toFixed(2) : '0.00'}</h1>
+              <hr className='my-3 border-t border-gray-300' />
+              <div className='flex justify-around items-center'>
+                <div className='text-primary-gray flex flex-col items-center'>
+                  <p className='text-xl font-bold'>{totalUnits}</p>
+                  <p className='text-sm'>Total Units</p>
+                </div>
+                <div className='text-primary-gray flex flex-col items-center'>
+                  <p className='text-xl font-bold'>{academicAward}</p>
+                  <p className='text-sm'>Academic Award</p>
+                </div>
+              </div>
             </div>
           </div>
         </main>
