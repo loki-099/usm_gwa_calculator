@@ -91,10 +91,11 @@ function App() {
         totalUnits += course.units || 0;
         totalGrade += (course.grade || 0) * (course.units || 0);
       }
-      let gwa = totalGrade / totalUnits;
-      if (gwa <= 1.25) {
+      let result = totalGrade / totalUnits;
+      let gwa = Number(result.toFixed(2));
+      if (gwa <= 1.5) {
         setAcademicAward('UAA');
-      } else if (1.26 <= gwa && gwa <= 1.5) {
+      } else if (1.51 <= gwa && gwa <= 1.75) {
         setAcademicAward('CAA');
       } else {
         setAcademicAward('None');
