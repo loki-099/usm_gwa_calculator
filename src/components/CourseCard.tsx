@@ -62,7 +62,7 @@ const CourseCard = ({
     <div className='bg-gray-150 rounded-md border border-gray-300'>
       {/* Heading */}
       <div className='w-full px-3 py-2 flex items-center justify-between border-b border-gray-300'>
-        <h1 className='font-bold text-lg'>Course {index + 1}</h1>
+        <h1 className='font-bold text-lg md:text-xl'>Course {index + 1}</h1>
         <button className='bg-red-50 border border-red-300 p-2 rounded-sm' onClick={() => removeCourse(index)}>
           <svg
             className='w-4 h-4 text-red-400'
@@ -86,7 +86,7 @@ const CourseCard = ({
         <div className='w-full'>
           <label
             htmlFor={`course${index}`}
-            className='block text-sm font-medium mb-1'
+            className='block text-sm md:text-base font-medium mb-1'
           >
             Course Title
           </label>
@@ -103,7 +103,7 @@ const CourseCard = ({
           <div className='w-full flex-1'>
             <label
               htmlFor={`units${index}`}
-              className='block text-sm font-medium mb-1'
+              className='block text-sm md:text-base font-medium mb-1'
             >
               Units
             </label>
@@ -130,7 +130,7 @@ const CourseCard = ({
           <div className='flex-1 w-full'>
             <label
               htmlFor={`grade${index}`}
-              className='block text-sm font-medium mb-1'
+              className='block text-sm md:text-base font-medium mb-1'
             >
               Grade
             </label>

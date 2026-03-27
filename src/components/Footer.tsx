@@ -12,11 +12,14 @@ const Footer = () => {
             USM GWA CALCULATOR
           </span>
           Developed by
-          <span
+          <a
+            href='https://github.com/loki-099'
+            target='_blank'
+            rel='noopener noreferrer'
             className='font-bold text-primary-yellow tracking-wide'
           >
             Luis Lloyd Tolentino
-          </span>
+          </a>
         </div>
       </div>
     </footer>

@@ -3,6 +3,8 @@ import { Header } from './components/Header';
 import Footer from './components/Footer';
 import CourseCard from './components/CourseCard';
 import { useEffect, useState } from 'react';
+import { Award, Calculator, CircleAlert, CircleX } from "lucide-react";
+
 
 function App() {
   type Course = {
@@ -133,9 +135,12 @@ function App() {
       <div className='min-h-screen bg-gray-100 font-display text-primary-gray'>
         {errorToast ? (
           <div className='fixed w-full top-16 px-4 left-1/2 -translate-x-1/2 z-50'>
-            <div className='bg-red-600 max-w-md mx-auto text-white px-4 py-2 rounded-md shadow-lg border border-red-700'>
-              <h1 className='font-bold text-white text-md'>Invalid Units</h1>
-              <p className='text-white text-sm'>{errorToast}</p>
+            <div className='bg-red-600 max-w-md mx-auto text-white p-5 rounded-md shadow-lg border border-red-700'>
+              <div className='flex items-center gap-x-2'>
+                <CircleX />
+                <h1 className='font-bold text-white text-md'>Invalid Units</h1>
+              </div>
+              <p className='text-white text-sm mt-1'>{errorToast}</p>
             </div>
           </div>
         ) : null}
@@ -144,24 +149,32 @@ function App() {
           {/* Calculate Container */}
           <div className='rounded-md shadow-xl bg-gray-50'>
             {/* Calculate Header */}
-            <div className='bg-linear-to-r from-primary-green to-primary-green-light p-4 md:p-6 border-b border-primary-yellow rounded-t-md'>
-              <h1 className='font-bold text-white text-xl md:text-2xl'>
-                Calculate your GWA
-              </h1>
-              <p className='text-white text-xs md:text-sm'>
+            <div className='bg-linear-to-r from-primary-green to-primary-green-light px-4 py-5 md:px-6 border-b border-primary-yellow rounded-t-md'>
+              <div className='flex items-center gap-x-4'>
+                <span className='bg-white/5 text-white backdrop-blur-sm p-2 border border-white/20 rounded-md font-bold'>
+                  <Calculator />
+                </span>
+                <h1 className='font-bold text-white text-xl md:text-2xl'>
+                  Calculate your GWA
+                </h1>
+              </div>
+              <p className='text-white text-sm md:text-base mt-2'>
                 Enter your courses, corresponding units, grades, and calculate
                 your GWA.
               </p>
+              <div className='flex items-center gap-x-2 mt-4 text-white/80'>
+                <CircleAlert />
+                <p className='text-xs md:text-md'>
+                  Note that courses like PE and NSTP are not included in the calculation of your GWA.
+                </p>
+              </div>
             </div>
             {/* Course Input Form */}
             <div className='py-4 px-4 md:py-6 md:px-30'>
-              <div className='flex items-center justify-between mb-4'>
-                <h1 className='font-bold text-lg text-primary-gray'>
+              <div className='mb-4'>
+                <h1 className='font-bold text-lg md:text-xl text-primary-gray'>
                   Your Courses
                 </h1>
-                <button className='bg-linear-to-r text-sm font-medium from-primary-green to-primary-green-light text-white px-3 py-1.5 rounded-md' onClick={addCourse}>
-                  + Add Course
-                </button>
               </div>
               <div className='flex flex-col gap-y-3'>
                 {courses.length === 0 ? (
@@ -170,7 +183,7 @@ function App() {
                       No courses added yet
                     </h1>
                     <p className='text-xs text-primary-gray'>
-                      Click the <span className='font-bold text-primary-green'>+ Add Course</span> button above to get started.
+                      Click the <span className='font-bold text-primary-green'>+ Add Course</span> button below to get started.
                     </p>
                   </div>
                 ) : (
@@ -190,7 +203,10 @@ function App() {
                   ))
                 )}
               </div>
-              <button className='w-full bg-linear-to-r from-primary-green to-primary-green-light text-white font-bold text-lg  py-2 rounded-md mt-6' onClick={calculateGWA}>
+              <button className='w-full bg-primary-green/5 border border-primary-green/20 text-primary-green font-bold text-lg md:text-xl py-2 md:py-3 rounded-md mt-6' onClick={addCourse}>
+                + Add Course
+              </button>
+              <button className='w-full bg-linear-to-r from-primary-green to-primary-green-light text-white font-bold text-lg md:text-xl py-2 md:py-3 rounded-md mt-2' onClick={calculateGWA}>
                 Calculate GWA
               </button>
               {/* <CourseCard course='Math 101' units={3} grade={90} /> */}
@@ -199,21 +215,24 @@ function App() {
           {/* Result Container */}
           <div className='rounded-md overflow-hidden shadow-xl bg-gray-50 mt-6'>
             {/* Header */}
-            <div className='w-full bg-linear-to-r from-primary-green to-primary-green-light p-4 md:p-6 border-b border-primary-yellow text-white'>
+            <div className='w-full bg-linear-to-r from-primary-green to-primary-green-light p-4 md:p-6 border-b border-primary-yellow text-white flex items-center justify-center gap-4'>
+              <span className='bg-white/5 text-white backdrop-blur-sm p-2 border border-white/20 rounded-md font-bold'>
+                <Award />
+              </span>
               <h1 className='font-bold text-xl md:text-2xl text-center'>Your GWA Result</h1>
             </div>
             {/* Body */}
             <div className='py-4 px-4 md:py-6 md:px-30'>
-              <h1 className='font-bold text-2xl md:text-3xl text-center'>{gwaResult ? gwaResult.toFixed(2) : '0.00'}</h1>
+              <h1 className='font-bold text-2xl md:text-3xl text-center text-primary-green'>{gwaResult ? gwaResult.toFixed(2) : '0.00'}</h1>
               <hr className='my-3 border-t border-gray-300' />
               <div className='flex justify-around items-center'>
                 <div className='text-primary-gray flex flex-col items-center'>
-                  <p className='text-xl font-bold'>{totalUnits}</p>
-                  <p className='text-sm'>Total Units</p>
+                  <p className='text-xl font-bold text-primary-green'>{totalUnits}</p>
+                  <p className='text-sm font-semibold'>Total Units</p>
                 </div>
                 <div className='text-primary-gray flex flex-col items-center'>
-                  <p className='text-xl font-bold'>{academicAward}</p>
-                  <p className='text-sm'>Academic Award</p>
+                  <p className='text-xl font-bold text-primary-green'>{academicAward}</p>
+                  <p className='text-sm font-semibold'>Academic Award</p>
                 </div>
               </div>
             </div>
