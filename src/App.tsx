@@ -2,23 +2,29 @@ import './App.css';
 import { Header } from './components/Header';
 import Footer from './components/Footer';
 import CourseCard from './components/CourseCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Award, Calculator, CircleAlert, CircleX } from "lucide-react";
+import { animate, motion, useMotionValue, useTransform } from 'motion/react';
 
 
 function App() {
   type Course = {
+    id: number;
     course?: string;
     units?: number;
     grade?: number;
   };
 
   const [courses, setCourses] = useState<Course[]>([]);
+  const nextCourseId = useRef(1);
   const [unitsErrorIndices, setUnitsErrorIndices] = useState<number[]>([]);
   const [errorToast, setErrorToast] = useState<string | null>(null);
   const [gwaResult, setGwaResult] = useState<number | null>(null);
   const [totalUnits, setTotalUnits] = useState<number>(0);
   const [academicAward, setAcademicAward] = useState<string>('None');
+  const animatedGwa = useMotionValue(0);
+  const formattedGwa = useTransform(animatedGwa, (latest) => latest.toFixed(2));
+  const resultSectionRef = useRef<HTMLDivElement | null>(null);
 
   const showErrorToast = (message: string) => {
     setErrorToast(message);
@@ -37,13 +43,30 @@ function App() {
     return invalid;
   };
 
+  const createCourse = (): Course => ({
+    id: nextCourseId.current++,
+    course: '',
+    units: 3,
+    grade: 1.0,
+  });
+
   const addCourse = () => {
-    setCourses([...courses, { course: '', units: 3, grade: 1.0 }]);
+    setCourses((prev) => [...prev, createCourse()]);
   };
 
-  const removeCourse = (index: number) => {
-    setCourses(courses.filter((_, i) => i !== index));
-    setUnitsErrorIndices((prev) => prev.filter((i) => i !== index).map((i) => (i > index ? i - 1 : i)));
+  const removeCourse = (id: number) => {
+    setCourses((prev) => {
+      const removedIndex = prev.findIndex((course) => course.id === id);
+      if (removedIndex === -1) return prev;
+
+      setUnitsErrorIndices((prevErr) =>
+        prevErr
+          .filter((i) => i !== removedIndex)
+          .map((i) => (i > removedIndex ? i - 1 : i)),
+      );
+
+      return prev.filter((course) => course.id !== id);
+    });
   };
 
   const setCourse = (index: number, course: string) => {
@@ -104,6 +127,12 @@ function App() {
       }
       setTotalUnits(totalUnits);
       setGwaResult(gwa);
+      window.setTimeout(() => {
+        resultSectionRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 0);
     }
 
     console.log(courses);
@@ -112,23 +141,17 @@ function App() {
 
   useEffect(() => {
     setCourses([
-      {
-        course: '',
-        units: 3,
-        grade: 1.0,
-      },
-      {
-        course: '',
-        units: 3,
-        grade: 1.0,
-      },
-      {
-        course: '',
-        units: 3,
-        grade: 1.0,
-      },
+      createCourse(),
+      createCourse(),
+      createCourse(),
     ]);
   }, []);
+
+  useEffect(() => {
+    const targetValue = gwaResult ?? 0;
+    const controls = animate(animatedGwa, targetValue, { duration: 0.8 });
+    return () => controls.stop();
+  }, [animatedGwa, gwaResult]);
 
   return (
     <>
@@ -189,7 +212,8 @@ function App() {
                 ) : (
                   courses.map((course, index) => (
                     <CourseCard
-                      key={index}
+                      key={course.id}
+                      id={course.id}
                       course={course.course || ''}
                       units={course.units ?? undefined}
                       grade={course.grade || 1.0}
@@ -203,17 +227,17 @@ function App() {
                   ))
                 )}
               </div>
-              <button className='w-full bg-primary-green/5 border border-primary-green/20 text-primary-green font-bold text-lg md:text-xl py-2 md:py-3 rounded-md mt-6' onClick={addCourse}>
+              <button className='w-full bg-primary-green/5 border border-primary-green/20 text-primary-green font-bold text-lg md:text-xl py-2 md:py-3 rounded-md mt-6 cursor-pointer' onClick={addCourse}>
                 + Add Course
               </button>
-              <button className='w-full bg-linear-to-r from-primary-green to-primary-green-light text-white font-bold text-lg md:text-xl py-2 md:py-3 rounded-md mt-2' onClick={calculateGWA}>
+              <button className='w-full bg-linear-to-r from-primary-green to-primary-green-light text-white font-bold text-lg md:text-xl py-2 md:py-3 rounded-md mt-2 cursor-pointer' onClick={calculateGWA}>
                 Calculate GWA
               </button>
               {/* <CourseCard course='Math 101' units={3} grade={90} /> */}
             </div>
           </div>
           {/* Result Container */}
-          <div className='rounded-md overflow-hidden shadow-xl bg-gray-50 mt-6'>
+          <div ref={resultSectionRef} className='rounded-md overflow-hidden shadow-xl bg-gray-50 mt-6'>
             {/* Header */}
             <div className='w-full bg-linear-to-r from-primary-green to-primary-green-light p-4 md:p-6 border-b border-primary-yellow text-white flex items-center justify-center gap-4'>
               <span className='bg-white/5 text-white backdrop-blur-sm p-2 border border-white/20 rounded-md font-bold'>
@@ -223,15 +247,39 @@ function App() {
             </div>
             {/* Body */}
             <div className='py-4 px-4 md:py-6 md:px-30'>
-              <h1 className='font-bold text-2xl md:text-3xl text-center text-primary-green'>{gwaResult ? gwaResult.toFixed(2) : '0.00'}</h1>
+              <motion.h1
+                key={gwaResult ?? 0}
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className='font-bold text-2xl md:text-3xl text-center text-primary-green'
+              >
+                {formattedGwa}
+              </motion.h1>
               <hr className='my-3 border-t border-gray-300' />
               <div className='flex justify-around items-center'>
                 <div className='text-primary-gray flex flex-col items-center'>
-                  <p className='text-xl font-bold text-primary-green'>{totalUnits}</p>
+                  <motion.p
+                    key={totalUnits}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className='text-xl font-bold text-primary-green'
+                  >
+                    {totalUnits}
+                  </motion.p>
                   <p className='text-sm font-semibold'>Total Units</p>
                 </div>
                 <div className='text-primary-gray flex flex-col items-center'>
-                  <p className='text-xl font-bold text-primary-green'>{academicAward}</p>
+                  <motion.p
+                    key={academicAward}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className='text-xl font-bold text-primary-green'
+                  >
+                    {academicAward}
+                  </motion.p>
                   <p className='text-sm font-semibold'>Academic Award</p>
                 </div>
               </div>
