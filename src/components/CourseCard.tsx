@@ -25,7 +25,7 @@ const CourseCard = ({
   setGrade: (index: number, grade: number) => void
 }) => {
   const gradeOptions = useMemo(
-    () => [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 4.0, 5.0],
+    () => [1.00, 1.25, 1.50, 1.75, 2.00, 2.25, 2.50, 2.75, 3.00, 4.00, 5.00],
     [],
   )
   const [isGradeOpen, setIsGradeOpen] = useState(false)
@@ -82,16 +82,16 @@ const CourseCard = ({
   return (
     <AnimatePresence>
       {show ? (
-        <motion.div className='bg-gray-150 rounded-md border border-gray-300' exit={{ opacity: 0, x: -100 }} initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
+        <motion.div className='bg-gray-150 rounded-md shadow-md' exit={{ opacity: 0, x: -100 }} initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
           {/* Heading */}
-          <div className='w-full px-3 py-2 flex items-center justify-between border-b border-gray-300'>
-            <h1 className='font-bold text-lg md:text-xl'>Course {index + 1}</h1>
+          <div className='w-full px-3 py-2 flex items-center justify-between bg-linear-to-r from-primary-green to-primary-green-light rounded-tl-md rounded-tr-md'>
+            <h1 className='font-bold text-lg md:text-xl text-white'>Course {index + 1}</h1>
             <button
-              className='bg-red-50 border border-red-300 p-2 rounded-sm cursor-pointer'
+              className='bg-red-500 p-2 rounded-md cursor-pointer'
               onClick={clickDelete}
             >
               <svg
-                className='w-4 h-4 text-red-400'
+                className='w-4 h-4 text-white'
                 aria-hidden='true'
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'

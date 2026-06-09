@@ -188,7 +188,7 @@ function App() {
               <div className='flex items-center gap-x-2 mt-4 text-white/80'>
                 <CircleAlert />
                 <p className='text-xs md:text-md'>
-                  Note that courses like PE and NSTP are not included in the calculation of your GWA.
+                  Note that courses like  NSTP, Thesis, Capstone, OJT, and Practicum subjects are not included in the calculation of your GWA.
                 </p>
               </div>
             </div>
@@ -199,7 +199,7 @@ function App() {
                   Your Courses
                 </h1>
               </div>
-              <div className='flex flex-col gap-y-3'>
+              <div className='flex flex-col gap-y-4'>
                 {courses.length === 0 ? (
                   <div className='bg-gray-150 rounded-md border border-gray-300  overflow-hidden text-center p-4 px-10'>
                     <h1 className='font-bold text-md text-primary-gray'>
